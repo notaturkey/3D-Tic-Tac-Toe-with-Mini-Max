@@ -126,7 +126,7 @@ Here on the second move I made irrational move of placing my symbol on the top r
 
 \section{Method of Implementation for 3x3x3 Tic-Tac-Toe}
 \subsection{MiniMax Algorithm with Alpha Beta Pruning}
-The minimax algorithm was very robust in my initial implementation, however, when trying to implement the same algorithm on a 3x3x3 board, the algorithm would hang on trying to compute all possible moves the computer and a player playing optimally could make. When trying to reduce the number of nodes to traverse in a tree, a common solution is to prune your tree while traversing. As anyone who knows MiniMax would suggest, the solution to this problem would be to use Alpha Beta pruning. As S. H. Fuller, J. G. Gaschnig and J. J. Gillogly state, "Alpha-beta is faster than mini-max because it does not explore some branches of the tree that will not affect the backed-up value" ~\cite{fullegaschnigillogly1973}. Alpha Beta pruning also utilizes the depth of the recursive function, allowing you to limit the amount of computation you've deemed neccessary for your AI making it perfect to adapt and test the level of diffuclty the AI can have. 
+The minimax algorithm was very robust in my initial implementation, however, when trying to implement the same algorithm on a 3x3x3 board, the algorithm would hang on trying to compute all possible moves the computer and a player playing optimally could make. This is usually the case when using minimax, minimax can be applied to database systems, expert systems, robot control systems, and theorem-provers but usually has to be adapted to handle the large state space that accompanies the problem at hand ~\cite{boro}. When trying to reduce the number of nodes to traverse in a tree, a common solution is to prune your tree while traversing. As anyone who knows MiniMax would suggest, the solution to this problem would be to use Alpha Beta pruning. As S. H. Fuller, J. G. Gaschnig and J. J. Gillogly state, "Alpha-beta is faster than mini-max because it does not explore some branches of the tree that will not affect the backed-up value" ~\cite{fullegaschnigillogly1973}. Alpha Beta pruning also utilizes the depth of the recursive function, allowing you to limit the amount of computation you've deemed neccessary for your AI making it perfect to adapt and test the level of diffuclty the AI can have. 
 
 \subsection{Implementing MiniMax with Alpha Beta Pruning for 3x3x3 Tic Tac Toe}
 As before, I wrote my playable implementation of MiniMax using the programming language python. I chose python because the simplicity of the syntax and the robustness of python's variable typing. Python's portability and readability makes the showcase of my code as easy as possible to demonstrate on different environments without the hassle of making sure the environment has the correct requirements beforehand. Before I could implement anything, I had to set up how the game would be playable. To begin, I had to create a board. My representation of the board is an array of 3 tic-tac-toe boards where each index represents a layer in the tic-tac-toe cube. For example, when the game starts you are shown the state of the board with the computer making the first move.
@@ -216,7 +216,67 @@ def miniMax(board,maximizer, depth):
                     bestMove = i
             return [best, bestMove]
 \end{lstlisting}
-The algorithm is looking 3 moves ahead, alternating between its best possible moves and the oponents best possible moves. To make the tree prune, I use the recursive depth to penalize moves that are further ahead. For example, with the traditional minimax algorithm the computer could have a move that ensures a win thats 10 moves ahead, or a win thats only one move away and the computer could pick the move that is 10 moves ahead instead of grabbing an immediate win. To prioritize the closer moves, I ensured the score was higher if it was less deep than the other possible moves much like Ronald L. Rivest's description on Penalty-based iterative search methods ~\cite{}. As soon as the algorithm sees a win state, I return the score and prune the other possibilities, since a win state is the most prioritized possibility. Doing this fixed my problem from the traditional game of tic-tac-toe where if the player does not play optimally, the computer would pick seemingly random moves instead of winning. 
+The algorithm is looking 3 moves ahead, alternating between its best possible moves and the oponents best possible moves. To make the tree prune, I use the recursive depth to penalize moves that are further ahead. For example, with the traditional minimax algorithm the computer could have a move that ensures a win thats 10 moves ahead, or a win thats only one move away and the computer could pick the move that is 10 moves ahead instead of grabbing an immediate win. To prioritize the closer moves, I ensured the score was higher if it was less deep than the other possible moves much like Ronald L. Rivest's description on Penalty-based iterative search methods ~\cite{rivest1987}. As soon as the algorithm sees a win state, I return the score and prune the other possibilities, since a win state is the most prioritized possibility. Doing this fixed my problem from the traditional game of tic-tac-toe where if the player does not play optimally, the computer would pick seemingly random moves instead of winning. 
+\subsection {Demonstration}
+Here's a game played against the AI:
+\begin{lstlisting}
+ Layer 0 in board:
+['-', '-', '-']
+['-', '-', '-']
+['-', '-', '-']
+Layer 1 in board:
+['-', '-', '-']
+['-', 'X', '-']
+['-', '-', '-']
+Layer 2 in board:
+['-', '-', '-']
+['-', '-', '-']
+['-', '-', '-']
+Enter your move i.e: x, y, z 
+1,1,2
+Layer 0 in board:
+['X', '-', '-']
+['-', '-', '-']
+['-', '-', '-']
+Layer 1 in board:
+['-', '-', '-']
+['-', 'X', '-']
+['-', '-', '-']
+Layer 2 in board:
+['-', '-', '-']
+['-', 'O', '-']
+['-', '-', '-']
+Enter your move i.e: x, y, z 
+2,2,2
+Layer 0 in board:
+['X', '-', '-']
+['-', '-', '-']
+['-', '-', '-']
+Layer 1 in board:
+['-', '-', '-']
+['-', 'X', '-']
+['-', '-', '-']
+Layer 2 in board:
+['X', '-', '-']
+['-', 'O', '-']
+['-', '-', 'O']
+Enter your move i.e: x, y, z
+2,2,0
+Final Board:
+Layer 0 in board:
+['X', '-', '-']
+['-', '-', '-']
+['-', '-', 'O']
+Layer 1 in board:
+['X', '-', '-']
+['-', 'X', '-']
+['-', '-', '-']
+Layer 2 in board:
+['X', '-', '-']
+['-', 'O', '-']
+['-', '-', 'O']
+youre a loser
+\end{lstlisting}
 
 \subsection {Final Thoughts}
 The game AI performs very well and to the best of my knowledge is unbeatable. I have yet to win a game against it. Limiting the depth of my tree alleviated alot of unecessary computation, making the AIs response seemingly instant. If I were to continue this project, I'd add a difficulty parameter that sets the depth of the recursion so the player can play with different versions of the AI making it harder or easier to play against.
